@@ -28,31 +28,18 @@
         </thead>
 
         <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>Task A</td>
-            <td>4 days</td>
-            <td>Open</td>
-            <td class="select"><input type="checkbox" name="" id=""></td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>Task B</td>
-            <td>4 days</td>
-            <td>Open</td>
-            <td class="select"><input type="checkbox" name="" id=""></td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td>Task C</td>
-            <td>4 days</td>
-            <td>Close</td>
-            <td class="select"><input type="checkbox" name="" id=""></td>
+          <tr v-for="d in rows">
+            <th scope="row">{{ $index + 1 }}</th>
+            <td>{{ d.name }}</td>
+            <td>{{ d.duration }}</td>
+            <td>{{ (d.open) ? 'Open' : 'Closed' }}</td>
+            <td class="select"><input type="checkbox" value="{{ d.id }}" v-model="checked"></td>
           </tr>
         </tbody>
       </table>
     </div>
 
+    <pre>{{ checked | json }}</pre>
 
   </div>
 
@@ -60,7 +47,28 @@
   <script>
   var app = new Vue({
     el: '#vue-app',
-    data: { }
+    data: {
+      checked: [],
+      rows: [
+      {
+        id: '_001',
+        name: 'Task A',
+        duration: 4,
+        open: false
+      },
+      {
+        id: '_002',
+        name: 'Task B',
+        duration: 2,
+        open: true
+      },
+      {
+        id: '_003',
+        name: 'Task C',
+        duration: 10,
+        open: true
+      }],
+    }
   });
   </script>
 
