@@ -15,58 +15,141 @@
   <div id="vue-app">
 
     <div class="panel panel-default">
-      <div class="panel-heading">Panel heading</div>
+      <div class="panel-heading">Task Table</div>
       <table class="table">
         <thead>
           <tr>
-            <th>#</th>
-            <th>Task Name</th>
-            <th>Duration</th>
-            <th>Status</th>
-            <th class="select">Select</th>
+            <th class="number">#</th>
+            <th class="name">Task Name</th>
+            <th class="duration">Duration</th>
+            <th class="status">Status</th>
+            <th class="edit"></th>
           </tr>
         </thead>
 
         <tbody>
           <tr v-for="d in rows">
-            <th scope="row">{{ $index + 1 }}</th>
-            <td>{{ d.name }}</td>
-            <td>{{ d.duration }}</td>
-            <td>{{ (d.open) ? 'Open' : 'Closed' }}</td>
-            <td class="select"><input type="checkbox" value="{{ d.id }}" v-model="checked"></td>
+            <th class="number" scope="row">{{ $index + 1 }}</th>
+            <td>
+              <div>{{ d.name }}</div>
+              <input v-show="d.isEdit" type="text" v-model="d.name">
+            </td>
+            <td class="duration">
+              <div>{{ d.duration }}</div>
+              <input v-show="d.isEdit" type="text" v-model="d.duration">
+            </td>
+            <td  class="status">
+              <div>{{ (d.open) ? 'Open' : 'Closed' }}</div>
+              <input v-show="d.isEdit" type="checkbox" v-model="d.open">
+            </td>
+            <td class="edit">
+              <button @click="edit(d.id)" class="btn btn-primary">{{ (d.isEdit) ? '完成' : '編輯' }}</button>
+              <button @click="del" class="btn btn-danger">刪除</button>
+            </td>
           </tr>
         </tbody>
+
+        <tfoot>
+          <!-- 新增用 -->
+          <tr>
+            <th class="number" scope="row">New</th>
+            <td>
+              <input type="text" v-model="newRows.name">
+            </td>
+            <td class="duration">
+              <input type="text" v-model="newRows.duration">
+            </td>
+            <td  class="status">
+              <div>Open?</div>
+              <input type="checkbox" v-model="newRows.open">
+            </td>
+            <td class="edit">
+              <button @click="create" class="btn btn-success">加入</button>
+              <button @click="reset" class="btn btn-warning">重置</button>
+            </td>
+          </tr>
+        </tfoot>
       </table>
     </div>
-
-    <pre>{{ checked | json }}</pre>
 
   </div>
 
   <script src="scripts/vue.js"></script>
   <script>
+
+  // Object Constructor.
+  var newItem = function(){
+    this.id = '';
+    this.name = '';
+    this.duration = 0;
+    this.open = false;
+    this.isEdit = false;
+  };
+
   var app = new Vue({
     el: '#vue-app',
+    methods: {
+      reset: function(){
+        this.newRows = new newItem();
+        return;
+      },
+      create: function(){
+        var check = true;
+        var duration = parseInt(this.newRows.duration, 10);
+
+        if( this.newRows.name === '' ){
+          check = false;
+          alert( 'name 不可留白' );
+        }
+
+        if( isNaN(duration) ){
+          check = false;
+          alert( 'duration 有誤' );
+        }
+
+        if( check ){
+          this.newRows.id = new Date().getTime().toString();
+          this.rows.push( this.newRows );
+          this.newRows = new newItem();
+        }
+
+        return;
+      },
+      edit: function(id){
+        var obj = this.rows.find(function(rows){ return rows.id === id; });
+        obj.isEdit = !obj.isEdit;
+        return;
+      },
+      del: function(id){
+        var idx = this.rows.findIndex(function(rows){ return rows.id === id; });
+        this.rows.splice(idx, 1);
+        return;
+      }
+    },
     data: {
+      newRows: new newItem(),
       checked: [],
       rows: [
       {
-        id: '_001',
+        id: '1463736920555',
         name: 'Task A',
         duration: 4,
-        open: false
+        open: false,
+        isEdit: false
       },
       {
-        id: '_002',
+        id: '1463736925862',
         name: 'Task B',
         duration: 2,
-        open: true
+        open: true,
+        isEdit: false
       },
       {
-        id: '_003',
+        id: '1463736942001',
         name: 'Task C',
         duration: 10,
-        open: true
+        open: true,
+        isEdit: false
       }],
     }
   });
