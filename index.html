@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Vue Document</title>
+
+  <!-- Latest compiled and minified Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+  <link rel="stylesheet" type="text/css" href="styles/style.css">
+
+</head>
+<body>
+
+  <div id="vue-app">
+
+    <div class="panel panel-default">
+      <div class="panel-heading">Panel heading</div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Task Name</th>
+            <th>Duration</th>
+            <th>Status</th>
+            <th class="select">Select</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <th scope="row">1</th>
+            <td>Task A</td>
+            <td>4 days</td>
+            <td>Open</td>
+            <td class="select"><input type="checkbox" name="" id=""></td>
+          </tr>
+          <tr>
+            <th scope="row">2</th>
+            <td>Task B</td>
+            <td>4 days</td>
+            <td>Open</td>
+            <td class="select"><input type="checkbox" name="" id=""></td>
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <td>Task C</td>
+            <td>4 days</td>
+            <td>Close</td>
+            <td class="select"><input type="checkbox" name="" id=""></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+
+  </div>
+
+  <script src="scripts/vue.js"></script>
+  <script>
+  var app = new Vue({
+    el: '#vue-app',
+    data: { }
+  });
+  </script>
+
+</body>
+</html>
