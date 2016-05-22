@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Vue Document</title>
+
+  <!-- Latest compiled and minified Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+  <link rel="stylesheet" type="text/css" href="styles/style.css">
+
+</head>
+<body>
+
+<template id="panel-template">
+  <div class="panel panel-default">
+    <div class="panel-heading">Task Table: {{name}}</div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="number">#</th>
+          <th class="name">Task Name</th>
+          <th class="duration">Duration</th>
+          <th class="status">Status</th>
+          <th class="edit"></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr v-for="d in rows">
+          <th class="number" scope="row">{{ $index + 1 }}</th>
+          <td>
+            <div>{{ d.name }}</div>
+            <input v-show="d.isEdit" type="text" v-model="d.name">
+          </td>
+          <td class="duration">
+            <div>{{ d.duration }}</div>
+            <input v-show="d.isEdit" type="text" v-model="d.duration">
+          </td>
+          <td  class="status">
+            <div>{{ (d.open) ? 'Open' : 'Closed' }}</div>
+            <input v-show="d.isEdit" type="checkbox" v-model="d.open">
+          </td>
+          <td class="edit">
+            <button @click="edit(d.id)" class="btn btn-primary">{{ (d.isEdit) ? '完成' : '編輯' }}</button>
+            <button @click="del(d.id)" class="btn btn-danger">刪除</button>
+          </td>
+        </tr>
+      </tbody>
+
+      <tfoot>
+        <!-- 新增用 -->
+        <tr>
+          <th class="number" scope="row">New</th>
+          <td>
+            <input type="text" v-model="newRows.name">
+          </td>
+          <td class="duration">
+            <input type="text" v-model="newRows.duration">
+          </td>
+          <td  class="status">
+            <div>Open?</div>
+            <input type="checkbox" v-model="newRows.open">
+          </td>
+          <td class="edit">
+            <button @click="create" class="btn btn-success">加入</button>
+            <button @click="reset" class="btn btn-warning">重置</button>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</template>
+
+
+  <div id="vue-app" style="margin: 10px;">
+
+    <ul class="nav nav-tabs">
+      <li @click.prevent="setCurrView('table1')"
+          v-bind:class="{'active': (currView === 'table1')}"><a href="#">Table 1</a></li>
+      <li @click.prevent="setCurrView('table2')"
+          v-bind:class="{'active': (currView === 'table2')}"><a href="#">Table 2</a></li>
+    </ul>
+
+    <panel v-show="(currView === 'table1')" name="Table1" :rows="row1"></panel>
+    <panel v-show="(currView === 'table2')" name="Table2" :rows="row2"></panel>
+
+  </div>
+
+  <script src="scripts/vue.js"></script>
+  <script>
+
+  // Object Constructor.
+  var newItem = function(){
+    this.id = '';
+    this.name = '';
+    this.duration = 0;
+    this.open = false;
+    this.isEdit = false;
+  };
+
+  var taskList1 = [
+    {
+      id: '1463736920555',
+      name: 'Task A',
+      duration: 1,
+      open: false,
+      isEdit: false
+    },
+    {
+      id: '1463636925862',
+      name: 'Task B',
+      duration: 3,
+      open: true,
+      isEdit: false
+    },
+    {
+      id: '1462736942001',
+      name: 'Task C',
+      duration: 5,
+      open: true,
+      isEdit: false
+    }
+  ];
+
+  var taskList2 = [
+    {
+      id: '1463887816734',
+      name: 'Task X',
+      duration: 5,
+      open: false,
+      isEdit: false
+    },
+    {
+      id: '1423887385463',
+      name: 'Task Y',
+      duration: 7,
+      open: true,
+      isEdit: false
+    },
+    {
+      id: '1433873933885',
+      name: 'Task Z',
+      duration: 9,
+      open: true,
+      isEdit: false
+    }
+  ];
+
+
+  Vue.component('panel', {
+    template: '#panel-template',
+    props:{
+      name: String,
+      rows: Array
+    },
+    methods: {
+      reset: function(){
+        this.newRows = new newItem();
+        return;
+      },
+      create: function(){
+        var check = true;
+        var duration = parseInt(this.newRows.duration, 10);
+
+        if( this.newRows.name === '' ){
+          check = false;
+          alert( 'name 不可留白' );
+        }
+
+        if( isNaN(duration) ){
+          check = false;
+          alert( 'duration 有誤' );
+        }
+
+        if( check ){
+          this.newRows.id = new Date().getTime().toString();
+          this.rows.push( this.newRows );
+          this.newRows = new newItem();
+        }
+
+        return;
+      },
+      edit: function(id){
+        var obj = this.rows.find(function(rows){ return rows.id === id; });
+        obj.isEdit = !obj.isEdit;
+        return;
+      },
+      del: function(id){
+        var idx = this.rows.findIndex(function(rows){ return rows.id === id; });
+        if( idx > -1 ) this.rows.splice(idx, 1);
+        return;
+      }
+    },
+    data: function(){
+      var _data = {
+        newRows: new newItem(),
+        checked: [],
+      };
+      return _data;
+    }
+  });
+
+  var app = new Vue({
+    el: '#vue-app',
+    data:{
+      currView: 'table1',
+      row1: taskList1,
+      row2: taskList2,
+    },
+    methods:{
+      setCurrView: function(name){
+        this.currView = name;
+        return;
+      }
+    }
+  });
+  </script>
+
+</body>
+</html>
