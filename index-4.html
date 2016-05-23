@@ -14,7 +14,7 @@
 
 <template id="panel-template">
   <div class="panel panel-default">
-    <div class="panel-heading">Task Table: {{name}}</div>
+    <div class="panel-heading">Task Table: {{name}},  {{ rows.length }} items.</div>
     <table class="table">
       <thead>
         <tr>
@@ -114,7 +114,10 @@
     template: '#panel-template',
     props:{
       name: String,
-      rows: Array,
+      rows: {
+        type: Array,
+        default: function(){ return []; }
+      },
       generator: String
     },
     methods: {
@@ -122,9 +125,11 @@
         var _this = this;
         console.log('fetchData Start');
 
+        // ajax via jQuery
         $.get('http://beta.json-generator.com/api/json/get/' + _this.generator , function(data){
           console.log( _this.name + 'fetchData Get');
-          _this['rows'] = data;
+          // _this.$set('rows', data);
+          _this.rows = data;
         });
       },
       reset: function(){

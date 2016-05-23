@@ -14,7 +14,7 @@
 
 <template id="panel-template">
   <div class="panel panel-default">
-    <div class="panel-heading">Task Table: {{name}}</div>
+    <div class="panel-heading">Task Table: {{name}}, {{ rows.length }} items.</div>
     <table class="table">
       <thead>
         <tr>
@@ -25,6 +25,13 @@
           <th class="edit"></th>
         </tr>
       </thead>
+
+      <!-- Loading, 用完即丟，所以用 v-if  -->
+      <tbody v-if="!rows">
+        <tr>
+          <td colspan="5"> <div style="font-size: 30px; font-weight: 900;">Loading...</div> </td>
+        </tr>
+      </tbody>
 
       <tbody>
         <tr v-for="d in rows">
@@ -76,18 +83,33 @@
   <div id="vue-app" style="margin: 10px;">
 
     <ul class="nav nav-tabs">
+
+      <li v-for="tbl in tables"
+          @click.prevent="setCurrView(tbl.ref)"
+          v-bind:class="{'active': (currView === tbl.ref)}"><a href="#">{{ tbl.name }}</a></li>
+
+    <!--
       <li @click.prevent="setCurrView('table1')"
           v-bind:class="{'active': (currView === 'table1')}"><a href="#">Table 1</a></li>
       <li @click.prevent="setCurrView('table2')"
           v-bind:class="{'active': (currView === 'table2')}"><a href="#">Table 2</a></li>
       <li @click.prevent="setCurrView('table3')"
           v-bind:class="{'active': (currView === 'table3')}"><a href="#">Table 3</a></li>
+     -->
     </ul>
 
-    <panel v-show="(currView === 'table1')" name="Table1" :rows="row1" generator="VyUMH45zZ"></panel>
-    <panel v-show="(currView === 'table2')" name="Table2" :rows="row2" generator="4JQVrE5z-"></panel>
-    <panel v-show="(currView === 'table3')" name="Table3" :rows="row3" generator="41fUSN5G-"></panel>
+    <button @click="addNewTable" style="margin:1em; margin-bottom: 0;" class="btn btn-primary">Add New Table</button>
 
+    <div v-for="tbl in tables">
+      <panel v-show="(currView === tbl.ref)" :name="tbl.name" :rows="tbl.rows" :generator="tbl.generator">
+      </panel>
+    </div>
+
+<!--
+    <panel v-ref:table1 v-show="(currView === 'table1')" name="Table1" :rows="row1" generator="VyUMH45zZ"></panel>
+    <panel v-ref:table2 v-show="(currView === 'table2')" name="Table2" :rows="row2" generator="4JQVrE5z-"></panel>
+    <panel v-ref:table3 v-show="(currView === 'table3')" name="Table3" :rows="row3" generator="41fUSN5G-"></panel>
+ -->
   </div>
 
   <script src="scripts/vue.js"></script>
@@ -104,28 +126,33 @@
     this.isEdit = false;
   };
 
-  // generator: http://beta.json-generator.com/41fUSN5G-
-
-  // task list1: http://beta.json-generator.com/api/json/get/VyUMH45zZ
-  // task list2: http://beta.json-generator.com/api/json/get/4JQVrE5z-
-  // task list3: http://beta.json-generator.com/api/json/get/41fUSN5G-
-
   Vue.component('panel', {
     template: '#panel-template',
     props:{
       name: String,
-      rows: Array,
+      rows: {
+        type: Array,
+        default: function(){ return []; }
+      },
       generator: String
     },
     methods: {
       fetchData: function(){
         var _this = this;
-        console.log('fetchData Start');
 
-        $.get('http://beta.json-generator.com/api/json/get/' + _this.generator , function(data){
-          console.log( _this.name + 'fetchData Get');
-          _this['rows'] = data;
-        });
+        // ajax via jQuery
+        if( _this.generator !== '' ){
+          $.get('http://beta.json-generator.com/api/json/get/' + _this.generator , function(data){
+            _this.rows = data;
+          });
+        }
+
+      },
+      upload: function(){
+        var _this = this;
+
+        // 用 setTimeout 模擬。
+        window.setTimeout(function(){ alert( _this.name + '已上傳.' ); }, 1000);
       },
       reset: function(){
         this.newRows = new newItem();
@@ -165,15 +192,15 @@
       }
     },
     data: function(){
-      var _data = {
-        newRows: new newItem(),
+      return {
+        newRows: new newItem()
       };
-      return _data;
+
     },
     watch:{
       rows:{
         handler: function (newValue, oldValue) {
-          console.log('rows -- new: %s, old: %s', newValue, oldValue)
+          // console.log('rows -- new: %s, old: %s', newValue, oldValue)
         },
         deep: true
       }
@@ -187,14 +214,54 @@
     el: '#vue-app',
     data:{
       currView: 'table1',
+      tables: [
+        {
+          name: 'Table1',
+          rows: [],
+          generator: 'VyUMH45zZ',
+          ref: 'table1',
+          isCurr: false
+        },
+        {
+          name: 'Table2',
+          rows: [],
+          generator: '4JQVrE5z-',
+          ref: 'table2',
+          isCurr: false
+        },
+        {
+          name: 'Table3',
+          rows: [],
+          generator: '41fUSN5G-',
+          ref: 'table3',
+          isCurr: false
+        },
+      ]
     },
     methods:{
       setCurrView: function(name){
         this.currView = name;
         return;
+      },
+      addNewTable: function(){
+
+        var idx = this.$children.length + 1;
+        var name = window.prompt("輸入新表單標題", "");
+        name = name || 'unnamed-table' + idx;
+
+        var tbl =  {
+          name: name,
+          rows: [],
+          ref: '_table' + idx,
+          generator: '',
+          isCurr: false
+        };
+
+        this.tables.push(tbl);
       }
     }
   });
+
   </script>
 
 </body>
