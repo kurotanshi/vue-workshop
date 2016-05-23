@@ -27,11 +27,9 @@
       </thead>
 
       <!-- Loading, 用完即丟，所以用 v-if  -->
-      <tbody v-if="!rows">
-        <tr>
-          <td colspan="5"> <div style="font-size: 30px; font-weight: 900;">Loading...</div> </td>
-        </tr>
-      </tbody>
+        <tbody v-if="!rows">
+          <tr><td colspan="5"> <div style="font-size: 30px; font-weight: 900;">Loading...</div> </td></tr>
+        </tbody>
 
       <tbody>
         <tr v-for="d in rows">
