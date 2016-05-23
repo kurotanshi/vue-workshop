@@ -84,9 +84,9 @@
           v-bind:class="{'active': (currView === 'table3')}"><a href="#">Table 3</a></li>
     </ul>
 
-    <panel v-show="(currView === 'table1')" name="Table1" :rows="row1" generator="VyUMH45zZ"></panel>
-    <panel v-show="(currView === 'table2')" name="Table2" :rows="row2" generator="4JQVrE5z-"></panel>
-    <panel v-show="(currView === 'table3')" name="Table3" :rows="row3" generator="41fUSN5G-"></panel>
+    <panel v-show="(currView === 'table1')" name="Table1" generator="VyUMH45zZ"></panel>
+    <panel v-show="(currView === 'table2')" name="Table2" generator="4JQVrE5z-"></panel>
+    <panel v-show="(currView === 'table3')" name="Table3" generator="41fUSN5G-"></panel>
 
   </div>
 
@@ -114,10 +114,6 @@
     template: '#panel-template',
     props:{
       name: String,
-      rows: {
-        type: Array,
-        default: function(){ return []; }
-      },
       generator: String
     },
     methods: {
@@ -172,6 +168,7 @@
     data: function(){
       var _data = {
         newRows: new newItem(),
+        rows: []
       };
       return _data;
     },

@@ -13,69 +13,81 @@
 <body>
 
 <template id="panel-template">
-  <div class="panel panel-default">
-    <div class="panel-heading">Task Table: {{name}}, {{ rows.length }} items.</div>
-    <table class="table">
-      <thead>
-        <tr>
-          <th class="number">#</th>
-          <th class="name">Task Name</th>
-          <th class="duration">Duration</th>
-          <th class="status">Status</th>
-          <th class="edit"></th>
-        </tr>
-      </thead>
+  <div>
+    <div class="panel panel-default">
+      <div class="panel-heading">Task Table: {{name}}, {{ rows.length }} items.</div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th class="number">#</th>
+            <th class="name">Task Name</th>
+            <th class="duration">Duration</th>
+            <th class="status">Status</th>
+            <th class="edit"></th>
+          </tr>
+        </thead>
 
-      <!-- Loading, 用完即丟，所以用 v-if  -->
-      <tbody v-if="!rows">
-        <tr>
-          <td colspan="5"> <div style="font-size: 30px; font-weight: 900;">Loading...</div> </td>
-        </tr>
-      </tbody>
+        <!-- Loading, 用完即丟，所以用 v-if  -->
+        <tbody v-if="!rows">
+          <tr>
+            <td colspan="5"> <div style="font-size: 30px; font-weight: 900;">Loading...</div> </td>
+          </tr>
+        </tbody>
 
-      <tbody>
-        <tr v-for="d in rows">
-          <th class="number" scope="row">{{ $index + 1 }}</th>
-          <td>
-            <div>{{ d.name }}</div>
-            <input v-show="d.isEdit" type="text" v-model="d.name">
-          </td>
-          <td class="duration">
-            <div>{{ d.duration }}</div>
-            <input v-show="d.isEdit" type="text" v-model="d.duration">
-          </td>
-          <td  class="status">
-            <div>{{ (d.open) ? 'Open' : 'Closed' }}</div>
-            <input v-show="d.isEdit" type="checkbox" v-model="d.open">
-          </td>
-          <td class="edit">
-            <button @click="edit(d.id)" class="btn btn-primary">{{ (d.isEdit) ? '完成' : '編輯' }}</button>
-            <button @click="del(d.id)" class="btn btn-danger">刪除</button>
-          </td>
-        </tr>
-      </tbody>
+        <tbody>
+          <tr v-for="d in rows | limitBy countOfPage pageStart">
+            <th class="number" scope="row">{{ (currPage-1) * countOfPage + $index + 1 }}</th>
+            <td>
+              <div>{{ d.name }}</div>
+              <input v-show="d.isEdit" type="text" v-model="d.name">
+            </td>
+            <td class="duration">
+              <div>{{ d.duration }}</div>
+              <input v-show="d.isEdit" type="text" v-model="d.duration">
+            </td>
+            <td  class="status">
+              <div>{{ (d.open) ? 'Open' : 'Closed' }}</div>
+              <input v-show="d.isEdit" type="checkbox" v-model="d.open">
+            </td>
+            <td class="edit">
+              <button @click="edit(d.id)" class="btn btn-primary">{{ (d.isEdit) ? '完成' : '編輯' }}</button>
+              <button @click="del(d.id)" class="btn btn-danger">刪除</button>
+            </td>
+          </tr>
+        </tbody>
 
-      <tfoot>
-        <!-- 新增用 -->
-        <tr>
-          <th class="number" scope="row">Add</th>
-          <td>
-            <input type="text" v-model="newRows.name">
-          </td>
-          <td class="duration">
-            <input type="text" v-model="newRows.duration">
-          </td>
-          <td  class="status">
-            <div>Open?</div>
-            <input type="checkbox" v-model="newRows.open">
-          </td>
-          <td class="edit">
-            <button @click="create" class="btn btn-success">加入</button>
-            <button @click="reset" class="btn btn-warning">重置</button>
-          </td>
-        </tr>
-      </tfoot>
-    </table>
+        <tfoot>
+          <!-- 新增用 -->
+          <tr>
+            <th class="number" scope="row">Add</th>
+            <td>
+              <input type="text" v-model="newRows.name">
+            </td>
+            <td class="duration">
+              <input type="text" v-model="newRows.duration">
+            </td>
+            <td  class="status">
+              <div>Open?</div>
+              <input type="checkbox" v-model="newRows.open">
+            </td>
+            <td class="edit">
+              <button @click="create" class="btn btn-success">加入</button>
+              <button @click="reset" class="btn btn-warning">重置</button>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <ul class="pagination" style="margin-left: 1em;">
+      <li v-bind:class="{'disabled': (currPage === 1)}" @click.prevent="setPage(currPage-1)"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+      <!--
+        <li v-bind:class="{'active': (currPage === 1)}" @click.prevent="setPage(1)"><a href="#">1</a></li>
+      -->
+      <li v-for="n in totalPage" v-bind:class="{'active': (currPage === (n+1))}" @click.prevent="setPage(n+1)"><a href="#">{{ n+1 }}</a></li>
+      <li v-bind:class="{'disabled': (currPage === totalPage)}" @click.prevent="setPage(currPage+1)"><a href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
+    </ul>
+
   </div>
 </template>
 
@@ -88,14 +100,6 @@
           @click.prevent="setCurrView(tbl.ref)"
           v-bind:class="{'active': (currView === tbl.ref)}"><a href="#">{{ tbl.name }}</a></li>
 
-    <!--
-      <li @click.prevent="setCurrView('table1')"
-          v-bind:class="{'active': (currView === 'table1')}"><a href="#">Table 1</a></li>
-      <li @click.prevent="setCurrView('table2')"
-          v-bind:class="{'active': (currView === 'table2')}"><a href="#">Table 2</a></li>
-      <li @click.prevent="setCurrView('table3')"
-          v-bind:class="{'active': (currView === 'table3')}"><a href="#">Table 3</a></li>
-     -->
     </ul>
 
     <button @click="addNewTable" style="margin:1em; margin-bottom: 0;" class="btn btn-primary">Add New Table</button>
@@ -105,11 +109,6 @@
       </panel>
     </div>
 
-  <!--
-    <panel v-ref:table1 v-show="(currView === 'table1')" name="Table1" generator="VyUMH45zZ"></panel>
-    <panel v-ref:table2 v-show="(currView === 'table2')" name="Table2" generator="4JQVrE5z-"></panel>
-    <panel v-ref:table3 v-show="(currView === 'table3')" name="Table3" generator="41fUSN5G-"></panel>
-  -->
   </div>
 
   <script src="scripts/vue.js"></script>
@@ -150,6 +149,12 @@
         // 用 setTimeout 模擬。
         window.setTimeout(function(){ alert( _this.name + '已上傳.' ); }, 1000);
       },
+      setPage: function(idx){
+        if( idx <= 0 || idx > this.totalPage ){
+          return;
+        }
+        this.currPage = idx;
+      },
       reset: function(){
         this.newRows = new newItem();
         return;
@@ -189,17 +194,18 @@
     },
     data: function(){
       return {
+        countOfPage: 5,
+        currPage: 1,
         newRows: new newItem(),
         rows: []
       };
-
     },
-    watch:{
-      rows:{
-        handler: function (newValue, oldValue) {
-          // console.log('rows -- new: %s, old: %s', newValue, oldValue)
-        },
-        deep: true
+    computed:{
+      pageStart: function(){
+        return (this.currPage - 1) * this.countOfPage;
+      },
+      totalPage: function(){
+        return Math.ceil(this.rows.length/this.countOfPage);
       }
     },
     ready: function(){
