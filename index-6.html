@@ -83,6 +83,7 @@
         <li v-bind:class="{'active': (currPage === 1)}" @click.prevent="setPage(1)"><a href="#">1</a></li>
       -->
       <li v-for="n in totalPage" v-bind:class="{'active': (currPage === (n+1))}" @click.prevent="setPage(n+1)"><a href="#">{{ n+1 }}</a></li>
+
       <li v-bind:class="{'disabled': (currPage === totalPage)}" @click.prevent="setPage(currPage+1)"><a href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
     </ul>
 
