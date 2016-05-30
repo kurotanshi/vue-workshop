@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Vue Document</title>
+
+  <!-- Latest compiled and minified Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+  <link rel="stylesheet" type="text/css" href="styles/style.css">
+
+</head>
+<body>
+
+<template id="panel-template">
+  <div>
+    <div class="panel panel-default">
+      <div class="panel-heading">Task Table: {{name}}, {{ rows.length }} items.</div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th class="number">#</th>
+            <th class="name">Task Name</th>
+            <th class="duration">Duration</th>
+            <th class="status">Status</th>
+            <th class="edit"></th>
+          </tr>
+        </thead>
+
+        <!-- Loading, 用完即丟，所以用 v-if  -->
+        <tbody v-if="!rows">
+          <tr><td colspan="5"> <div style="font-size: 30px; font-weight: 900;">Loading...</div> </td></tr>
+        </tbody>
+
+        <tbody>
+          <tr v-for="d in rows | filterBy filter_name in 'name' | limitBy countOfPage pageStart">
+            <th class="number" scope="row">{{ (currPage-1) * countOfPage + $index + 1 }}</th>
+            <td>
+              <div>{{ d.name }}</div>
+              <input v-show="d.isEdit" type="text" v-model="d.name">
+            </td>
+            <td class="duration">
+              <div>{{ d.duration }}</div>
+              <input v-show="d.isEdit" type="text" v-model="d.duration">
+            </td>
+            <td  class="status">
+              <div>{{ (d.open) ? 'Open' : 'Closed' }}</div>
+              <input v-show="d.isEdit" type="checkbox" v-model="d.open">
+            </td>
+            <td class="edit">
+              <button @click="edit(d.id)" class="btn btn-primary">{{ (d.isEdit) ? '完成' : '編輯' }}</button>
+              <button @click="del(d.id)" class="btn btn-danger">刪除</button>
+            </td>
+          </tr>
+        </tbody>
+
+        <tfoot>
+          <!-- 新增用 -->
+          <tr>
+            <th class="number" scope="row">Add</th>
+            <td>
+              <input type="text" v-model="newRows.name">
+            </td>
+            <td class="duration">
+              <input type="text" v-model="newRows.duration">
+            </td>
+            <td  class="status">
+              <div>Open?</div>
+              <input type="checkbox" v-model="newRows.open">
+            </td>
+            <td class="edit">
+              <button @click="create" class="btn btn-success">加入</button>
+              <button @click="reset" class="btn btn-warning">重置</button>
+            </td>
+          </tr>
+
+          <tr>
+            <th>Filter</th>
+            <td colspan="4"> <input type="text" v-model="filter_name"> </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <ul v-show="rows.length > 0" class="pagination" style="margin-left: 1em;">
+      <li v-bind:class="{'disabled': (currPage === 1)}" @click.prevent="setPage(currPage-1)"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+      <li v-for="n in totalPage" v-bind:class="{'active': (currPage === (n+1))}" @click.prevent="setPage(n+1)"><a href="#">{{ n+1 }}</a></li>
+      <li v-bind:class="{'disabled': (currPage === totalPage)}" @click.prevent="setPage(currPage+1)"><a href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
+    </ul>
+
+  </div>
+</template>
+
+
+  <div id="vue-app" style="margin: 10px;">
+
+    <ul class="nav nav-tabs">
+
+      <li v-for="tbl in tables"
+          @click.prevent="setCurrView(tbl.ref)"
+          v-bind:class="{'active': (currView === tbl.ref)}"><a href="#">{{ tbl.name }}</a></li>
+
+    </ul>
+
+    <button @click="addNewTable" style="margin:1em; margin-bottom: 0;" class="btn btn-primary">Add New Table</button>
+
+    <div v-for="tbl in tables">
+      <panel v-show="(currView === tbl.ref)" :name="tbl.name" :generator="tbl.generator">
+      </panel>
+    </div>
+
+  </div>
+
+  <script src="scripts/vue.js"></script>
+  <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+
+  <script>
+
+  // Object Constructor.
+  var newItem = function(){
+    this.id = '';
+    this.name = '';
+    this.duration = 0;
+    this.open = false;
+    this.isEdit = false;
+  };
+
+  Vue.component('panel', {
+    template: '#panel-template',
+    props:{
+      name: String,
+      generator: String
+    },
+    methods: {
+      fetchData: function(){
+        var _this = this;
+
+        // ajax via jQuery
+        if( _this.generator !== '' ){
+          $.get('http://beta.json-generator.com/api/json/get/' + _this.generator , function(data){
+            _this.rows = data;
+          });
+        }
+
+      },
+      upload: function(){
+        var _this = this;
+
+        // 用 setTimeout 模擬。
+        window.setTimeout(function(){ alert( _this.name + '已上傳.' ); }, 1000);
+      },
+      setPage: function(idx){
+        if( idx <= 0 || idx > this.totalPage ){
+          return;
+        }
+        this.currPage = idx;
+      },
+      reset: function(){
+        this.newRows = new newItem();
+        return;
+      },
+      create: function(){
+        var check = true;
+        var duration = parseInt(this.newRows.duration, 10);
+
+        if( this.newRows.name === '' ){
+          check = false;
+          alert( 'name 不可留白' );
+        }
+
+        if( isNaN(duration) ){
+          check = false;
+          alert( 'duration 有誤' );
+        }
+
+        if( check ){
+          this.newRows.id = new Date().getTime().toString();
+          this.rows.push( this.newRows );
+          this.newRows = new newItem();
+        }
+
+        return;
+      },
+      edit: function(id){
+        var obj = this.rows.find(function(rows){ return rows.id === id; });
+        obj.isEdit = !obj.isEdit;
+        return;
+      },
+      del: function(id){
+        var idx = this.rows.findIndex(function(rows){ return rows.id === id; });
+        if( idx > -1 ) this.rows.splice(idx, 1);
+        return;
+      }
+    },
+    data: function(){
+      return {
+        countOfPage: 5,
+        currPage: 1,
+        newRows: new newItem(),
+        rows: [],
+        filter_name: ''
+      };
+    },
+    computed:{
+      pageStart: function(){
+        return (this.currPage - 1) * this.countOfPage;
+      },
+      totalPage: function(){
+        return Math.ceil(this.rows.length/this.countOfPage);
+      }
+    },
+    ready: function(){
+      this.fetchData();
+    }
+  });
+
+  var app = new Vue({
+    el: '#vue-app',
+    data:{
+      currView: 'table1',
+      tables: [
+        {
+          name: 'Table1',
+          rows: [],
+          generator: 'VyUMH45zZ',
+          ref: 'table1',
+          isCurr: false
+        },
+        {
+          name: 'Table2',
+          rows: [],
+          generator: '4JQVrE5z-',
+          ref: 'table2',
+          isCurr: false
+        },
+        {
+          name: 'Table3',
+          rows: [],
+          generator: '41fUSN5G-',
+          ref: 'table3',
+          isCurr: false
+        },
+      ]
+    },
+    methods:{
+      setCurrView: function(name){
+        this.currView = name;
+        return;
+      },
+      addNewTable: function(){
+
+        var idx = this.$children.length + 1;
+        var name = window.prompt("輸入新表單標題", "");
+        name = name || 'unnamed-table' + idx;
+
+        var tbl =  {
+          name: name,
+          rows: [],
+          ref: '_table' + idx,
+          generator: '',
+          isCurr: false
+        };
+
+        this.tables.push(tbl);
+      }
+    }
+  });
+
+  </script>
+
+</body>
+</html>
