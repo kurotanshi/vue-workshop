@@ -33,7 +33,7 @@
         </tbody>
 
         <tbody>
-          <tr v-for="d in rows | filterBy filter_name in 'name' | limitBy countOfPage pageStart">
+          <tr v-for="d in rows | filterBy filter_name in 'name' | recordLength 'filteredRowCount' | limitBy countOfPage pageStart ">
             <th class="number" scope="row">{{ (currPage-1) * countOfPage + $index + 1 }}</th>
             <td>
               <div>{{ d.name }}</div>
@@ -76,7 +76,7 @@
 
           <tr>
             <th>Filter</th>
-            <td colspan="4"> <input type="text" v-model="filter_name"> </td>
+            <td colspan="4"> <input type="text" v-model="filter_name"></td>
           </tr>
         </tfoot>
       </table>
@@ -87,6 +87,8 @@
       <li v-for="n in totalPage" v-bind:class="{'active': (currPage === (n+1))}" @click.prevent="setPage(n+1)"><a href="#">{{ n+1 }}</a></li>
       <li v-bind:class="{'disabled': (currPage === totalPage)}" @click.prevent="setPage(currPage+1)"><a href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
     </ul>
+
+  <div>{{ filteredRowCount }}</div>
 
   </div>
 </template>
@@ -99,7 +101,6 @@
       <li v-for="tbl in tables"
           @click.prevent="setCurrView(tbl.ref)"
           v-bind:class="{'active': (currView === tbl.ref)}"><a href="#">{{ tbl.name }}</a></li>
-
     </ul>
 
     <button @click="addNewTable" style="margin:1em; margin-bottom: 0;" class="btn btn-primary">Add New Table</button>
@@ -124,6 +125,11 @@
     this.open = false;
     this.isEdit = false;
   };
+
+  Vue.filter('recordLength', function (result, key) {
+    this.$set(key, result.length);
+    return result;
+  });
 
   Vue.component('panel', {
     template: '#panel-template',
@@ -198,7 +204,8 @@
         currPage: 1,
         newRows: new newItem(),
         rows: [],
-        filter_name: ''
+        filter_name: '',
+        filteredRowCount: null
       };
     },
     computed:{
@@ -206,7 +213,14 @@
         return (this.currPage - 1) * this.countOfPage;
       },
       totalPage: function(){
-        return Math.ceil(this.rows.length/this.countOfPage);
+
+        if( this.filter_name.trim() === '' ) {
+          return Math.ceil(this.rows.length / this.countOfPage);
+        }
+        else{
+          return Math.ceil(this.filteredRowCount / this.countOfPage);
+        }
+
       }
     },
     ready: function(){
