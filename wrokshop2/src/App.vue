@@ -2,12 +2,15 @@
   <div id="app">
 
     <ul class="nav nav-tabs">
-      <li><a href="#">Table 1</a></li>
-      <li><a href="#">Table 2</a></li>
+      <li @click.prevent="setCurrView('table1')"
+          v-bind:class="{'active': (currView === 'table1')}"><a href="#">Table 1</a></li>
+      <li @click.prevent="setCurrView('table2')"
+          v-bind:class="{'active': (currView === 'table2')}"><a href="#">Table 2</a></li>
     </ul>
 
-    <Panel name="Table1" :rows="row1"></Panel>
-    <Panel name="Table2" :rows="row2"></Panel>
+    <Panel v-show="(currView === 'table1')" name="Table1" :rows="row1"></Panel>
+    <Panel v-show="(currView === 'table2')" name="Table2" :rows="row2"></Panel>
+
   </div>
 </template>
 
@@ -29,10 +32,14 @@ var row2 = [
 export default {
   components: { Panel },
   methods: {
-
+    setCurrView (name){
+      this.currView = name;
+      return;
+    }
   },
   data () {
     return {
+      currView: 'table1',
       row1: row1,
       row2: row2,
     };
