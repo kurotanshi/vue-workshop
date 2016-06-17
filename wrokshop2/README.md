@@ -1,4 +1,4 @@
-# workshop2
+# vue-wrokshop
 
 > A Vue.js project
 
