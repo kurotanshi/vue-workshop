@@ -1,18 +1,17 @@
 <template>
   <div id="app">
 
+    <button @click="addNewTable" class="btn btn-primary addNewTable">Add New Table</button>
+
     <ul class="nav nav-tabs">
-      <li @click.prevent="setCurrView('table1')"
-          v-bind:class="{'active': (currView === 'table1')}"><a href="#">Table 1</a></li>
-      <li @click.prevent="setCurrView('table2')"
-          v-bind:class="{'active': (currView === 'table2')}"><a href="#">Table 2</a></li>
-      <li @click.prevent="setCurrView('table3')"
-          v-bind:class="{'active': (currView === 'table3')}"><a href="#">Table 3</a></li>
+      <li v-for="tbl in panels"
+          @click.prevent="setCurrView(tbl.ref)"
+          v-bind:class="{'active': (currView === tbl.ref)}"><a href="#">{{ tbl.name }}</a></li>
     </ul>
 
-    <Panel v-show="(currView === 'table1')" name="Table1" generator="VyUMH45zZ"></Panel>
-    <Panel v-show="(currView === 'table2')" name="Table2" generator="4JQVrE5z-"></Panel>
-    <Panel v-show="(currView === 'table3')" name="Table3" generator="41fUSN5G-"></Panel>
+    <div v-for="tbl in panels">
+      <Panel v-show="(currView === tbl.ref)" :name="tbl.name" :generator="tbl.generator"></Panel>
+    </div>
 
   </div>
 </template>
@@ -26,11 +25,33 @@ export default {
     setCurrView (name){
       this.currView = name;
       return;
+    },
+    addNewTable(){
+      // this.$children.length = Panel 組件數
+      var idx = this.$children.length + 1;
+
+      var name = window.prompt("輸入新表單標題", "");
+      name = name || 'unnamed-table ' + idx;
+
+      var tbl =  {
+        name: name,
+        rows: [],
+        ref: '_table' + idx,
+        generator: '',
+        isCurr: false
+      };
+
+      this.panels.push(tbl);
     }
   },
   data () {
     return {
       currView: 'table1',
+      panels: [
+        { name: 'Table1', rows: [], generator: 'VyUMH45zZ', ref: 'table1', isCurr: false },
+        { name: 'Table2', rows: [], generator: '4JQVrE5z-', ref: 'table2', isCurr: false },
+        { name: 'Table3', rows: [], generator: '41fUSN5G-', ref: 'table3', isCurr: false },
+      ]
     };
   }
 };
@@ -41,9 +62,9 @@ export default {
 #app{
   width: 980px; margin: 10px;
 }
-.nav-tabs{
-  margin-bottom: 1em;
-}
+.nav-tabs{ margin-bottom: 1em; }
+
+.addNewTable{ margin-bottom: 1em; }
 
 body {
   font-family: Helvetica Neue, Arial, sans-serif;
