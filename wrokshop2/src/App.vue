@@ -1,5 +1,11 @@
 <template>
   <div id="app">
+
+    <ul class="nav nav-tabs">
+      <li><a href="#">Table 1</a></li>
+      <li><a href="#">Table 2</a></li>
+    </ul>
+
     <Panel name="Table1" :rows="row1"></Panel>
     <Panel name="Table2" :rows="row2"></Panel>
   </div>
@@ -39,6 +45,10 @@ export default {
 #app{
   width: 980px; margin: 10px;
 }
+.nav-tabs{
+  margin-bottom: 1em;
+}
+
 body {
   font-family: Helvetica Neue, Arial, sans-serif;
   font-size: 14px;
