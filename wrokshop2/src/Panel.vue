@@ -1,4 +1,5 @@
 <template>
+  <div>
   <div class="panel panel-default">
     <div class="panel-heading">Task Table: {{name}}</div>
     <table class="table">
@@ -15,7 +16,7 @@
       <!-- 表頭 -->
 
       <tbody>
-        <tr v-for="d in rows">
+        <tr v-for="d in rows | limitBy countOfPage pageStart">
           <th class="number" scope="row">{{ $index + 1 }}</th>
           <td>
             <div>{{ d.name }}</div>
@@ -58,6 +59,24 @@
       </tfoot>
       <!-- 新增用 -->
     </table>
+    </div>
+
+    <!-- 頁籤 -->
+    <ul v-show="rows.length > 0" class="pagination" style="margin-left: 1em;">
+      <li v-bind:class="{'disabled': (currPage === 1)}"
+          @click.prevent="setPage(currPage-1)">
+          <a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+
+      <li v-for="n in totalPage"
+          v-bind:class="{'active': (currPage === (n+1))}"
+          @click.prevent="setPage(n+1)">
+            <a href="#">{{ n+1 }}</a></li>
+
+      <li v-bind:class="{'disabled': (currPage === totalPage)}"
+          @click.prevent="setPage(currPage+1)">
+          <a href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
+
+    </ul>
   </div>
 </template>
 
@@ -80,7 +99,7 @@ export default {
         })
         .then(function(res){
           // success
-          _this.$set('rows', res.data);
+          _this.rows = res.data;
         }, function(res){
           // error
           console.log( res );
@@ -92,10 +111,6 @@ export default {
       return;
     },
     create (){
-
-      if( typeof this.rows === 'undefined'){
-         this.$set('rows', []);
-      }
 
       this.newRows.id = new Date().getTime().toString();
       this.rows.push( this.newRows );
@@ -112,9 +127,26 @@ export default {
       this.rows.splice(idx, 1);
       return;
     },
+
+    setPage (idx){
+      if( idx <= 0 || idx > this.totalPage ){ return; }
+      this.currPage = idx;
+    },
+
+  },
+  computed:{
+    pageStart: function(){
+      return (this.currPage - 1) * this.countOfPage;
+    },
+    totalPage: function(){
+      return Math.ceil(this.rows.length/this.countOfPage);
+    }
   },
   data () {
     return {
+      rows: [],
+      countOfPage: 5,   // 單頁筆數
+      currPage: 1,      // 目前頁數
       newRows: { id: '', name: '', duration: 1, open: false, isEdit: false },
     };
   },
