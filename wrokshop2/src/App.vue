@@ -6,10 +6,13 @@
           v-bind:class="{'active': (currView === 'table1')}"><a href="#">Table 1</a></li>
       <li @click.prevent="setCurrView('table2')"
           v-bind:class="{'active': (currView === 'table2')}"><a href="#">Table 2</a></li>
+      <li @click.prevent="setCurrView('table3')"
+          v-bind:class="{'active': (currView === 'table3')}"><a href="#">Table 3</a></li>
     </ul>
 
-    <Panel v-show="(currView === 'table1')" name="Table1" :rows="row1"></Panel>
-    <Panel v-show="(currView === 'table2')" name="Table2" :rows="row2"></Panel>
+    <Panel v-show="(currView === 'table1')" name="Table1" generator="VyUMH45zZ"></Panel>
+    <Panel v-show="(currView === 'table2')" name="Table2" generator="4JQVrE5z-"></Panel>
+    <Panel v-show="(currView === 'table3')" name="Table3" generator="41fUSN5G-"></Panel>
 
   </div>
 </template>

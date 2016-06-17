@@ -66,9 +66,12 @@
 export default {
   props:{
     name: String,
-    rows: Array
+    generator: String
   },
   methods: {
+    fetchData (){
+
+    },
     reset (){
       this.newRows = { id: '', name: '', duration: 1, open: false, isEdit: false };
       return;
@@ -94,6 +97,9 @@ export default {
     return {
       newRows: { id: '', name: '', duration: 1, open: false, isEdit: false },
     };
+  },
+  ready (){
+    this.fetchData();
   }
 };
 </script>
