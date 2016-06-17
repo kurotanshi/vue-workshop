@@ -98,7 +98,7 @@ export default {
       newRows: { id: '', name: '', duration: 1, open: false, isEdit: false },
     };
   },
-  ready (){
+  created (){
     this.fetchData();
   }
 };
