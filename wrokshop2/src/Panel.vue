@@ -70,6 +70,18 @@ export default {
   },
   methods: {
     fetchData (){
+      var _this = this;
+
+      // GET request
+      _this
+        .$http({ url: 'http://beta.json-generator.com/api/json/get/' + _this.generator, method: 'GET'})
+        .then(function(res){
+          // success
+          _this.$set('rows', res.data);
+        }, function(res){
+          // error
+          console.log( res );
+        });
 
     },
     reset (){
