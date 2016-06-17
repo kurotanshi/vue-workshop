@@ -16,23 +16,23 @@
         <!-- 表頭 -->
 
         <tbody>
-          <tr>
-            <th class="number" scope="row">1</th>
+          <tr v-for="d in rows">
+            <th class="number" scope="row">{{ $index + 1 }}</th>
             <td>
-              <div>Name</div>
-              <input type="text">
+              <div>{{ d.name }}</div>
+              <input v-show="d.isEdit" type="text" v-model="d.name">
             </td>
             <td class="duration">
-              <div>123</div>
-              <input type="text">
+              <div>{{ d.duration }}</div>
+              <input v-show="d.isEdit" type="text" v-model="d.duration">
             </td>
             <td class="status">
-              <div>Open</div>
-              <input type="checkbox">
+              <div>{{ (d.open) ? 'Open' : 'Closed' }}</div>
+              <input v-show="d.isEdit" type="checkbox" v-model="d.open">
             </td>
             <td class="edit">
-              <button class="btn btn-primary">編輯</button>
-              <button class="btn btn-danger">刪除</button>
+              <button @click="edit(d.id)" class="btn btn-primary">{{ (d.isEdit) ? '完成' : '編輯' }}</button>
+              <button @click="del" class="btn btn-danger">刪除</button>
             </td>
           </tr>
         </tbody>
@@ -40,20 +40,20 @@
         <!-- 新增用 -->
         <tfoot>
           <tr>
-            <th class="number" scope="row">新增</th>
+            <th class="number" scope="row">New</th>
             <td>
-              <input type="text">
+              <input type="text" v-model="newRows.name">
             </td>
             <td class="duration">
-              <input type="text">
+              <input type="text" v-model="newRows.duration">
             </td>
             <td  class="status">
               <div>Open?</div>
-              <input type="checkbox">
+              <input type="checkbox" v-model="newRows.open">
             </td>
             <td class="edit">
-              <button class="btn btn-success">加入</button>
-              <button class="btn btn-warning">重置</button>
+              <button @click="create" class="btn btn-success">加入</button>
+              <button @click="reset" class="btn btn-warning">重置</button>
             </td>
           </tr>
         </tfoot>
@@ -71,13 +71,20 @@ export default {
       return;
     },
     create (){
-
+      this.newRows.id = new Date().getTime().toString();
+      this.rows.push( this.newRows );
+      this.reset();
+      return;
     },
-    edit (){
-
+    edit (id){
+      var obj = this.rows.find(function(rows){ return rows.id === id; });
+      obj.isEdit = !obj.isEdit;
+      return;
     },
-    del (){
-
+    del (id){
+      var idx = this.rows.findIndex(function(rows){ return rows.id === id; });
+      this.rows.splice(idx, 1);
+      return;
     },
   },
   data () {
