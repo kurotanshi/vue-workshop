@@ -1,6 +1,6 @@
 <template>
   <div class="panel panel-default">
-    <div class="panel-heading">Task Table</div>
+    <div class="panel-heading">Task Table: {{name}}</div>
     <table class="table">
       <!-- 表頭 -->
       <thead>
@@ -64,6 +64,10 @@
 
 <script>
 export default {
+  props:{
+    name: String,
+    rows: Array
+  },
   methods: {
     reset (){
       this.newRows = { id: '', name: '', duration: 1, open: false, isEdit: false };
@@ -89,11 +93,6 @@ export default {
   data () {
     return {
       newRows: { id: '', name: '', duration: 1, open: false, isEdit: false },
-      rows: [
-        { id: '00001', name: '任務 A', duration: 1, open: false, isEdit: false },
-        { id: '00002', name: '任務 B', duration: 3, open: false, isEdit: false },
-        { id: '00003', name: '任務 C', duration: 6, open: false, isEdit: false }
-      ]
     };
   }
 };
