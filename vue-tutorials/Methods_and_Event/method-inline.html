@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.css">
+  <title>Vue Method Event Handlers</title>
+  <style>
+    #app div{ margin: 1em 0; font-size: 1.5em;  }
+  </style>
+</head>
+<body>
+
+  <div id="app">
+
+    <div id="example-3">
+      <button v-on:click="say('hi')">Say hi</button>
+      <button v-on:click="say('what')">Say what</button>
+    </div>
+
+  </div>
+
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/vue/2.0.0-rc.1/vue.min.js"></script>
+  <script>
+
+    new Vue({
+      el: '#example-3',
+      methods: {
+        say: function (message) {
+          alert(message)
+        }
+      }
+    });
+
+  </script>
+
+
+</body>
+</html>
