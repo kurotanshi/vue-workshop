@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.css">
+  <title>Vue Directives</title>
+  <style>
+    #app div{ margin: 1em 0;  }
+  </style>
+</head>
+<body>
+
+  <div id="app">
+    <h1 v-if="greeting">Hello!</h1>
+    <h1 v-if="greeting2">Hello!</h1>
+    <div>
+      <!-- full syntax -->
+      <a v-bind:href="url">url</a>
+
+      <!-- shorthand -->
+      <a :href="url">url</a>
+    </div>
+
+    <div>
+      <!-- full syntax -->
+      <button v-bind:disabled="someDynamicCondition">Button</button>
+
+      <!-- shorthand -->
+      <button :disabled="someDynamicCondition">Button</button>
+    </div>
+
+  </div>
+
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/vue/2.0.0-rc.1/vue.min.js"></script>
+  <script>
+    var vm = new Vue({
+      el: '#app',
+      data:{
+        greeting: true,
+        greeting2: false,
+        url: 'https://5xruby.tw',
+        someDynamicCondition: true
+      },
+    });
+  </script>
+
+
+</body>
+</html>

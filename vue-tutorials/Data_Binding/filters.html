@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.css">
+  <title>Vue Filters</title>
+  <style>
+    #app div{ margin: 1em 0;  }
+  </style>
+</head>
+<body>
+
+  <div id="app">
+    <h1>{{ msg }} => {{ msg | capitalize }}</h1>
+  </div>
+
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/vue/2.0.0-rc.1/vue.min.js"></script>
+  <script>
+    var vm = new Vue({
+      el: '#app',
+      data:{
+        msg:  'hello!'
+      },
+      filters: {
+        capitalize: function (value) {
+          if (!value) return ''
+          value = value.toString();
+          return value.charAt(0).toUpperCase() + value.slice(1);
+        }
+      }
+    });
+
+
+  </script>
+
+
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.css">
+  <title>Vue Data Binding (Forms)</title>
+  <style>
+    #app div{ margin: 1em 0;  }
+  </style>
+</head>
+<body>
+
+  <div id="app">
+    <div class="form-input">
+      <span>Message is: {{ message }}</span>
+      <br>
+      <input type="text" v-model="message" placeholder="edit me">
+    </div>
+
+    <hr>
+
+    <div class="form-chkbox">
+      <input type="checkbox"
+             id="checkbox" v-model="checked">
+      <label for="checkbox">{{ checked }}</label>
+    </div>
+
+    <hr>
+
+    <div class="form-chkboxes">
+      <input type="checkbox" id="jack" value="Jack" v-model="checkedNames">
+      <label for="jack">Jack</label>
+      <input type="checkbox" id="john" value="John" v-model="checkedNames">
+      <label for="john">John</label>
+      <input type="checkbox" id="mike" value="Mike" v-model="checkedNames">
+      <label for="mike">Mike</label>
+      <br>
+      <span>Checked names: {{ checkedNames | json }}</span>
+    </div>
+
+    <hr>
+
+    <div class="form-radio">
+      <input type="radio" id="one" value="One" v-model="picked">
+      <label for="one">One</label>
+      <br>
+      <input type="radio" id="two" value="Two" v-model="picked">
+      <label for="two">Two</label>
+      <br>
+      <span>Picked: {{ picked }}</span>
+    </div>
+
+    <hr>
+
+    <div class="form-select">
+      <select v-model="selected">
+        <option>A</option>
+        <!-- selected not work -->
+        <option selected>B</option>
+        <option>C</option>
+      </select>
+      <span>Selected: {{ selected }}</span>
+    </div>
+  </div>
+
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/vue/2.0.0-rc.1/vue.min.js"></script>
+  <script>
+
+    new Vue({
+      el: '.form-input',
+      data: {
+        message: ''
+      }
+    });
+
+
+    new Vue({
+      el: '.form-chkbox',
+      data: {
+        checked: false
+      }
+    });
+
+
+    new Vue({
+      el: '.form-chkboxes',
+      data: {
+        checkedNames: []
+      }
+    });
+
+    new Vue({
+      el: '.form-radio',
+      data: {
+        picked: ''
+      }
+    });
+
+    new Vue({
+      el: '.form-select',
+      data: {
+        selected: ''
+      }
+    });
+  </script>
+
+
+</body>
+</html>

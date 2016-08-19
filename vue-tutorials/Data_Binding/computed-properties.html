@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.css">
+  <title>Vue Computed Properties</title>
+</head>
+<body>
+
+  <div id="example">
+    <p> Original message: "{{ message }}"</p>
+    <p> Computed reversed message: "{{ reversedMessage }}"</p>
+  </div>
+
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/vue/2.0.0-rc.1/vue.min.js"></script>
+  <script>
+
+    var vm = new Vue({
+      el: '#example',
+      data: {
+        message: '5xRuby'
+      },
+      computed: {
+        // a computed getter
+        reversedMessage: function () {
+          // `this` points to the vm instance
+          return this.message.split('').reverse().join('')
+        }
+      }
+    });
+
+    console.log( vm.reversedMessage );
+
+    // vm.message = 'Goodbye'
+    // console.log(vm.reversedMessage) // -> 'eybdooG'
+
+  </script>
+
+
+</body>
+</html>
