@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.css">
+  <title>Vue instance proxies</title>
+</head>
+<body>
+
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/vue/2.0.0-rc.1/vue.min.js"></script>
+  <script>
+
+    var data = { a: 1 };
+
+    var vm = new Vue({
+      data: data
+    });
+
+    console.log( 'vm.a === data.a', vm.a === data.a );
+
+    vm.a = 2;
+    console.log( 'data.a', data.a );
+
+    data.a = 3;
+    console.log( 'vm.a', vm.a );
+
+  </script>
+
+
+</body>
+</html>
