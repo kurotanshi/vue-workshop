@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.css">
+  <title>Vue v-show</title>
+  <style>
+    #app div{ margin: 1em 0; }
+  </style>
+</head>
+<body>
+
+  <div id="app">
+
+  <!--
+    <custom-component v-show="condition"></custom-component>
+    <p v-else>This could be a component too</p>
+  -->
+
+    <custom-component v-show="condition"></custom-component>
+    <p v-show="!condition">This could be a component too</p>
+
+  </div>
+
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/vue/2.0.0-rc.1/vue.min.js"></script>
+  <script>
+
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        condition: false, //true
+      },
+      components: {
+        customComponent: Vue.extend({
+          template: '<div>Custom Component</div>',
+        })
+      }
+    });
+
+  </script>
+
+
+</body>
+</html>

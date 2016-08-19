@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.css">
+  <title>Vue Binding HTML Classes</title>
+  <style>
+    #app div{ margin: 1em 0; }
+
+    .blue{ color: blue }
+    .big-size{ font-size: 30px; }
+    .pink-bg{ background-color: pink; }
+  </style>
+</head>
+<body>
+
+  <div id="app">
+
+    <div :class="{ blue: isBlue }">
+      Hello Vue!
+    </div>
+
+    <div :class="largeFont">
+      Hello Vue!
+    </div>
+
+    <div :class="[largeFont, pinkBackground] ">
+      Hello Vue!
+    </div>
+
+    <hr>
+
+    <div :style="styleObject1">
+      Hello Vue!
+    </div>
+
+    <div :style="[styleObject1, styleObject2]">
+      Hello Vue!
+    </div>
+
+  </div>
+
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/vue/2.0.0-rc.1/vue.min.js"></script>
+  <script>
+
+    var vm = new Vue({
+      el: '#app',
+      data:{
+        isBlue: true,
+        largeFont: 'big-size',
+        pinkBackground: 'pink-bg',
+
+        styleObject1: {
+          color: 'red',
+          fontSize: '20px',
+          marginBottom: '10px'
+        },
+        styleObject2: {
+          backgroundColor: 'cyan',
+          lineHeight: '2em'
+    }
+      }
+    });
+
+  </script>
+
+
+</body>
+</html>
