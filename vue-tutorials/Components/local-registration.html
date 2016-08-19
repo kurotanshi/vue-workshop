@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.css">
+  <title>Vue Local Registration</title>
+  <style>
+    #app div{ margin: 1em 0;  }
+  </style>
+</head>
+<body>
+
+  <div id="example">
+    <my-component></my-component>
+  </div>
+
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/vue/2.0.0-rc.1/vue.min.js"></script>
+  <script>
+
+    var Child = {
+      template: '<div>A custom component!</div>'
+    };
+
+    new Vue({
+      el: '#example',
+      components: {
+        // <my-component> will only be available in parent's template
+        'my-component': Child
+      }
+    });
+
+  </script>
+
+
+</body>
+</html>

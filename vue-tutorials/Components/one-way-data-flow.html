@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.css">
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/vue/2.0.0-rc.1/vue.min.js"></script>
+  <title>Vue One-Way Data Flow</title>
+  <style>
+    #app div{ margin: 1em 0;  }
+    input{  width: 500px; padding: 5px; }
+  </style>
+</head>
+<body>
+
+  <div id="parent-object-mutation-demo">
+    <p>Parent: {{ message.text }}</p>
+    <p>Child:
+      <my-component :parent-message="message"></my-component>
+    </p>
+  </div>
+
+
+    <script>
+
+    Vue.component('my-component', {
+      template: '<input v-model="message.text">',
+      props: {
+        parentMessage: String
+      },
+      data: function () {
+        return {
+          // message: this.parentMessage
+
+          // To fix this, you can clone the object with:
+          message: JSON.parse(JSON.stringify( this.parentMessage ))
+        }
+      }
+    });
+
+    new Vue({
+      el: '#parent-object-mutation-demo',
+      data: {
+        message: {
+          text: 'hello'
+        }
+      }
+    });
+
+  </script>
+
+
+</body>
+</html>

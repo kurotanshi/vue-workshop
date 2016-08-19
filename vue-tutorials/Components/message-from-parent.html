@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.css">
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/vue/2.0.0-rc.1/vue.min.js"></script>
+  <title>Vue props</title>
+  <style>
+    #app div{ margin: 1em 0;  }
+    input{  width: 500px; padding: 5px; }
+  </style>
+</head>
+<body>
+
+  <div id="demo-2">
+    <input v-model="parentMsg">
+
+    <br>
+    <child :my-message="parentMsg"></child>
+  </div>
+
+
+  <script>
+
+    new Vue({
+      el: '#demo-2',
+      data: {
+        parentMsg: 'Message from parent'
+      },
+      components: {
+        child: {
+          // declare the props
+          props: {
+            myMessage: String
+          },
+          template: '<h2>{{ myMessage }}</h2>'
+        }
+      }
+    });
+
+  </script>
+
+
+</body>
+</html>
