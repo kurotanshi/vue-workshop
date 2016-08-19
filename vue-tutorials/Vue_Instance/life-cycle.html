@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.css">
+  <title>Vue Hello World</title>
+</head>
+<body>
+
+  <div id="app">
+    <h1>{{ count }}</h1>
+    <button @click="updateEvent">Update</button>
+  </div>
+
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/vue/2.0.0-rc.1/vue.min.js"></script>
+  <script>
+
+    var _root = new Vue({
+      el: '#app',
+      data: {
+        count: 0
+      },
+      methods:{
+        updateEvent: function(){
+          this.count += 1;
+        }
+      },
+      beforeCreate: function(){
+        // 元件實體剛被建立，屬性計算之前。
+        console.log( 'beforeCreate', this.$el );
+      },
+      created: function(){
+        // 元件實體已建立，屬性已綁定，但 DOM 還沒生成。
+        console.log( 'created', this.$el );
+      },
+      beforeMount: function(){
+        // 模板 (template) 編譯或掛載至 HTML 之前
+        console.log( 'beforeMount', this.$el );
+      },
+      mounted: function(){
+        // 模板 (template) 編譯或掛載至 HTML 之後 (不一定已存在 document)
+        console.log( 'mounted', this.$el );
+      },
+      beforeUpdate: function(){
+        // 元件被更新之前
+        console.log( 'beforeUpdate', this.$el.querySelector('h1').innerText, this.count );
+      },
+      updated: function(){
+        // 元件被更新之後
+        console.log( 'updated', this.$el.querySelector('h1').innerText, this.count );
+      }
+    });
+
+  </script>
+
+
+</body>
+</html>
