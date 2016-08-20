@@ -27,8 +27,8 @@
       </thead>
 
       <tbody>
-        <tr v-for="d in rows">
-          <th class="number" scope="row">{{ $index + 1 }}</th>
+        <tr v-for="(d, index) in rows">
+          <th class="number" scope="row">{{ index + 1 }}</th>
           <td>
             <div>{{ d.name }}</div>
             <input v-show="d.isEdit" type="text" v-model="d.name">
@@ -90,7 +90,7 @@
 
   </div>
 
-  <script src="scripts/vue.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/vue/2.0.0-rc.1/vue.min.js"></script>
   <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 
   <script>
@@ -180,7 +180,7 @@
         deep: true
       }
     },
-    ready: function(){
+    mounted: function(){
       this.fetchData();
     }
   });

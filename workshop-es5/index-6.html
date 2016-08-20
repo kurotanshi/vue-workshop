@@ -110,7 +110,7 @@
 
   </div>
 
-  <script src="scripts/vue.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/vue/2.0.0-rc.1/vue.min.js"></script>
   <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 
   <script>
@@ -207,7 +207,7 @@
         return Math.ceil(this.rows.length/this.countOfPage);
       }
     },
-    ready: function(){
+    mounted: function(){
       this.fetchData();
     }
   });
