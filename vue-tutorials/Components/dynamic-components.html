@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.css">
+  <title>Vue Dynamic Components</title>
+  <style>
+    #app div{ margin: 1em 0;  }
+  </style>
+</head>
+<body>
+
+
+  <div id="app">
+
+    <keep-alive>
+      <component :is="currentView"></component>
+    </keep-alive>
+
+  </div>
+
+
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/vue/2.0.0-rc.1/vue.min.js"></script>
+  <script>
+
+    new Vue({
+      el: '#app',
+      data:{
+        msg: 'Hello',
+        currentView: 'archive'
+      },
+      components: {
+        home: Vue.extend({
+          template: '<div>home1</div>',
+        }),
+        posts: Vue.extend({
+          template: '<div>posts2</div>',
+        }),
+        archive: Vue.extend({
+          template: '<div>archive3</div>',
+        }),
+      }
+    });
+
+  </script>
+
+
+</body>
+</html>

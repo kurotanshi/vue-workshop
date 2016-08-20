@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.css">
+  <title>Vue counter-event</title>
+  <style>
+    #app div{ margin: 1em 0; font-size: 1.5em;  }
+  </style>
+</head>
+<body>
+
+  <div id="app">
+
+    <div id="counter-event-example">
+      <p>{{ total }}</p>
+      <button-counter v-on:increment="incrementTotal"></button-counter>
+      <button-counter v-on:increment="incrementTotal"></button-counter>
+    </div>
+
+  </div>
+
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/vue/2.0.0-rc.1/vue.min.js"></script>
+  <script>
+
+    Vue.component('button-counter', {
+      template: '<button @click="increment">{{ counter }}</button>',
+      data: function () {
+        return {
+          counter: 0
+        }
+      },
+      methods: {
+        increment: function () {
+          this.counter += 1
+          this.$emit('increment')
+        }
+      },
+    });
+
+    var _root = new Vue({
+      el: '#counter-event-example',
+      data: {
+        total: 0
+      },
+      methods: {
+        incrementTotal: function () {
+          this.total += 1
+        }
+      }
+    });
+
+  </script>
+
+
+</body>
+</html>

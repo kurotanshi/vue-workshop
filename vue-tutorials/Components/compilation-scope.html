@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.css">
+  <title>Vue props</title>
+  <style>
+    #app div{ margin: 1em 0;  }
+  </style>
+</head>
+<body>
+
+    <template id="child-template">
+      <h1>{{ msg }}</h1>
+    </template>
+
+    <div id="events-example">
+      <child></child>
+    </div>
+
+
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/vue/2.0.0-rc.1/vue.min.js"></script>
+  <script>
+
+  // children component
+  Vue.component('child', {
+    template: '#child-template',
+    data: function () {
+      return {
+        msg: 'I\'m child.'
+      };
+    }
+  });
+
+  // parent component
+  var parent = new Vue({
+    el: '#events-example',
+    data: {
+      msg: 'I\'m parent.'
+    }
+  });
+
+  </script>
+
+
+</body>
+</html>
