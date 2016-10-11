@@ -10,7 +10,7 @@
 <body>
 
   <div id="app">
-    <h1>{{ msg }} => {{ msg | capitalize }}</h1>
+    <h1>{{ msg }} => {{ msg | _capitalize }}</h1>
   </div>
 
   <script src="http://cdnjs.cloudflare.com/ajax/libs/vue/2.0.0/vue.min.js"></script>
@@ -22,7 +22,7 @@
         msg:  'hello!'
       },
       filters: {
-        capitalize: function (value) {
+        _capitalize: function (value) {
           if (!value) return ''
           value = value.toString();
           return value.charAt(0).toUpperCase() + value.slice(1);
