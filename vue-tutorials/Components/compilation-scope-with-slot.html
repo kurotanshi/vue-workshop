@@ -2,7 +2,7 @@
 <html>
 <head>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.css">
-  <title>Vue compilation scope</title>
+  <title>Vue compilation scope with slot</title>
   <style>
     #app { padding: .5em;  font-size: 30px; }
     #app div{ margin: 1em 0;  }
@@ -11,15 +11,16 @@
 <body>
 
     <template id="child-template">
-      <h1>{{ msg }}</h1>
+      <div>
+        <h1>{{ msg }}</h1>
+        <slot> Default Slot Content </slot>
+      </div>
     </template>
 
     <div id="app">
-      <h2>{{ msg }}</h2>
-      <hr>
-
-      <!-- {{ msg }} not work -->
-      <child>{{ msg }}</child>
+      <child>
+        <p>This "msg" is from parent: {{ msg }}</p>
+      </child>
     </div>
 
 
