@@ -3,7 +3,7 @@
 <head>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.css">
   <script src="http://cdnjs.cloudflare.com/ajax/libs/vue/2.0.0/vue.min.js"></script>
-  <title>Vue One-Way Data Flow</title>
+  <title>Vue One-Way Data Flow with Update Event</title>
   <style>
     #app { padding: .5em;  font-size: 30px; }
     #app div{ margin: 1em 0;  }
@@ -16,8 +16,11 @@
     <p>
       Parent: {{ message.text }} <input v-model="message.text">
     </p>
+
     <hr>
-    <p>Child:
+
+    <p>
+      Child:
       <my-component :parent-message="message.text"></my-component>
     </p>
   </div>
@@ -26,9 +29,14 @@
   <script>
 
   Vue.component('my-component', {
-    template: '<span><input v-model="parentMessage"></span>',
+    template: '<span><input v-model="parentMessage"> <button @click="updateText">Update</button></span>',
     props: {
       parentMessage: String
+    },
+    methods:{
+      updateText(){
+        this.$parent.$emit('update', this.parentMessage);
+      }
     }
   });
 
@@ -38,6 +46,14 @@
       message: {
         text: 'hello'
       }
+    },
+    methods:{
+      selfUpdate(val){
+        this.message.text = val;
+      }
+    },
+    mounted(){
+      this.$on('update', this.selfUpdate);
     }
   });
 
