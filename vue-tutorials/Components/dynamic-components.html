@@ -4,20 +4,23 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.css">
   <title>Vue Dynamic Components</title>
   <style>
-    #app div{ margin: 1em 0;  }
+    #app { padding: .5em;  font-size: 30px; }
+    #app div{ margin: 1em 0;}
   </style>
 </head>
 <body>
 
-
   <div id="app">
+
+    <select v-model="currentView">
+      <option v-for="option in options" :value="option">{{ option }}</option>
+    </select>
 
     <keep-alive>
       <component :is="currentView"></component>
     </keep-alive>
 
   </div>
-
 
   <script src="http://cdnjs.cloudflare.com/ajax/libs/vue/2.0.0/vue.min.js"></script>
   <script>
@@ -26,17 +29,37 @@
       el: '#app',
       data:{
         msg: 'Hello',
-        currentView: 'archive'
+        options: ["home", 'posts', 'archive'],
+        currentView: 'home'
       },
       components: {
         home: Vue.extend({
-          template: '<div>home1</div>',
+          template: '<div>\
+                      <div>HOME + {{ count }}</div> <button @click="add">Add</button>\
+                     </div>',
+          data (){
+            return { count: 0 }
+          },
+          methods: {
+            add(){
+              ++this.count;
+            }
+          },
+          created (){
+            console.log('created: home');
+          }
         }),
         posts: Vue.extend({
-          template: '<div>posts2</div>',
+          template: '<div>POST</div>',
+          created (){
+            console.log('created: posts');
+          }
         }),
         archive: Vue.extend({
-          template: '<div>archive3</div>',
+          template: '<div>ARCHIVE</div>',
+          created (){
+            console.log('created: archive');
+          }
         }),
       }
     });

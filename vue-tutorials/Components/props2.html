@@ -11,23 +11,33 @@
 <body>
 
   <div id="app">
-    <child message="Hello!"></child>
+    <child></child>
     <hr>
-    <child message="Hi!"></child>
-    <hr>
-    <child message="12345"></child>
+    <child :message="msg"></child>
   </div>
 
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/vue/2.0.0/vue.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/vue/2.0.0/vue.js"></script>
   <script>
 
+    // child
     Vue.component('child', {
-      props: ["message"],
+      props: {
+        message: {
+          type: String,
+          default: () => {
+            return "Hi 5xRuby!"
+          }
+        }
+      },
       template: '<H1>{{ message }}</H1>'
     });
 
+    // parent
     var vm = new Vue({
-      el: '#app'
+      el: '#app',
+      data:{
+        msg: 'Vue!'
+      }
     });
 
   </script>

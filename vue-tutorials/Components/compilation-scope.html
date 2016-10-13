@@ -2,8 +2,9 @@
 <html>
 <head>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.css">
-  <title>Vue props</title>
+  <title>Vue compilation scope</title>
   <style>
+    #app { padding: .5em;  font-size: 30px; }
     #app div{ margin: 1em 0;  }
   </style>
 </head>
@@ -14,7 +15,9 @@
     </template>
 
     <div id="events-example">
-      <child></child>
+      <h2>{{ msg }}</h2>
+      <hr>
+      <child>{{ msg }}</child>
     </div>
 
 

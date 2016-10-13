@@ -5,14 +5,18 @@
   <script src="http://cdnjs.cloudflare.com/ajax/libs/vue/2.0.0/vue.min.js"></script>
   <title>Vue One-Way Data Flow</title>
   <style>
+    #app { padding: .5em;  font-size: 30px; }
     #app div{ margin: 1em 0;  }
     input{  width: 500px; padding: 5px; }
   </style>
 </head>
 <body>
 
-  <div id="parent-object-mutation-demo">
-    <p>Parent: {{ message.text }}</p>
+  <div id="app">
+    <p>
+      Parent: {{ message.text }} <input v-model="message.text">
+    </p>
+    <hr>
     <p>Child:
       <my-component :parent-message="message"></my-component>
     </p>
@@ -26,7 +30,7 @@
       props: {
         parentMessage: String
       },
-      data: function () {
+      data () {
         return {
           // message: this.parentMessage
 
@@ -37,7 +41,7 @@
     });
 
     new Vue({
-      el: '#parent-object-mutation-demo',
+      el: '#app',
       data: {
         message: {
           text: 'hello'
