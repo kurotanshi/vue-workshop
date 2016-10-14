@@ -4,14 +4,17 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.css">
   <title>Vue Directives</title>
   <style>
+    #app{ margin: 2em; font-size: 1.5em;  }
     #app div{ margin: 1em 0;  }
+    label, button{ margin-right: 20px;  }
   </style>
 </head>
 <body>
 
   <div id="app">
-    <h1 v-if="greeting">Hello!</h1>
-    <h1 v-if="greeting2">Hello!</h1>
+    <h1 v-if="greeting">greeting!</h1>
+    <h1 v-if="greeting2">greeting 2!</h1>
+
     <div>
       <!-- full syntax -->
       <a v-bind:href="url">url</a>
@@ -20,17 +23,29 @@
       <a :href="url">url</a>
     </div>
 
+    <hr>
+
     <div>
+      <label>
+        <input type="radio" value="1" v-model="conds"> actived
+      </label>
+
+      <label>
+        <input type="radio" value="0" v-model="conds"> disabled
+      </label>
+      <div>someDynamicCondition: {{ someDynamicCondition }}</div>
+
       <!-- full syntax -->
-      <button v-bind:disabled="someDynamicCondition">Button</button>
+      <button v-bind:disabled="someDynamicCondition">Button 1</button>
 
       <!-- shorthand -->
-      <button :disabled="someDynamicCondition">Button</button>
+      <button :disabled="someDynamicCondition">Button 2</button>
     </div>
 
   </div>
 
   <script src="http://cdnjs.cloudflare.com/ajax/libs/vue/2.0.0/vue.min.js"></script>
+
   <script>
     var vm = new Vue({
       el: '#app',
@@ -38,8 +53,13 @@
         greeting: true,
         greeting2: false,
         url: 'https://5xruby.tw',
-        someDynamicCondition: true
+        conds: '1'
       },
+      computed:{
+        someDynamicCondition: function(){
+          return this.conds === '0';
+        }
+      }
     });
   </script>
 
