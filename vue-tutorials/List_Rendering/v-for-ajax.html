@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.css">
+  <title>Vue v-for</title>
+  <style>
+    #app{  font-size: 1.5em; line-height: 2; }
+  </style>
+</head>
+<body>
+
+  <div id="app">
+    <ul>
+      <li v-for="(item, index) in list">{{ item.name }}: {{ item.score }}</li>
+    </ul>
+  </div>
+
+  <script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/vue/2.0.0/vue.min.js"></script>
+  <script>
+
+    var example2 = new Vue({
+      el: '#app',
+      data: {
+        list: []
+      },
+      created(){
+        let _this = this;
+
+        $.get('http://www.json-generator.com/api/json/get/ciZILAuPNe?indent=2', function(data){
+          _this.list = data;
+        });
+      }
+    });
+
+  </script>
+
+</body>
+</html>
