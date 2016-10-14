@@ -10,18 +10,18 @@
 </head>
 <body>
 
-    <template id="child-template">
-      <div>
-        <h1>{{ msg }}</h1>
-        <slot> Default Slot Content </slot>
-      </div>
-    </template>
-
-    <div id="app">
-      <child>
-        <p>This "msg" is from parent: {{ msg }}</p>
-      </child>
+  <template id="child-template">
+    <div>
+      <h1>{{ msg }}</h1>
+      <slot> Default Slot Content </slot>
     </div>
+  </template>
+
+  <div id="app">
+    <child>
+      <p>This "msg" is from parent: {{ msg }}</p>
+    </child>
+  </div>
 
 
   <script src="http://cdnjs.cloudflare.com/ajax/libs/vue/2.0.0/vue.min.js"></script>
