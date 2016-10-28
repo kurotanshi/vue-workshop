@@ -26,10 +26,12 @@
       },
       beforeCreate: function(){
         // 元件實體剛被建立，屬性計算之前。
+        console.log( 'beforeCreate', this.count );
         console.log( 'beforeCreate', this.$el );
       },
       created: function(){
         // 元件實體已建立，屬性已綁定，但 DOM 還沒生成。
+        console.log( 'created', this.count );
         console.log( 'created', this.$el );
       },
       beforeMount: function(){

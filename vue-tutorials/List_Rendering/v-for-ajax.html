@@ -26,9 +26,12 @@
       },
       created(){
         let _this = this;
+        // console.log( this.list );
 
         $.get('http://www.json-generator.com/api/json/get/ciZILAuPNe?indent=2', function(data){
           _this.list = data;
+
+
         });
       }
     });

@@ -12,7 +12,7 @@
   <div id="app">
 
     <h1 v-if="ok">Yes</h1>
-
+<hr>
     <h1 v-if="ok2">Yes</h1>
     <h1 v-else>No</h1>
   </div>
@@ -23,7 +23,7 @@
     var vm = new Vue({
       el: '#app',
       data: {
-        ok: true,
+        ok: ( 1 > 0 ),
         ok2: false
       }
     });

@@ -11,8 +11,14 @@
 
   <div id="app">
 
+    <h1 v-if="ok">Hello!</h1>
+    <h1 v-else>Hello NG!</h1>
+
+<hr>
+
     <!-- Note that v-show doesn’t support the <template> syntax. -->
     <h1 v-show="ok">Hello!</h1>
+    <h1 v-show="!ok">Hello NG!</h1>
 
   </div>
 
@@ -22,7 +28,7 @@
     var vm = new Vue({
       el: '#app',
       data: {
-        ok: true
+        ok: false
       }
     });
 

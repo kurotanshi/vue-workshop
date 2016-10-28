@@ -29,7 +29,8 @@
   <script>
 
   Vue.component('my-component', {
-    template: '<span><input v-model="parentMessage"> <button @click="updateText">Update</button></span>',
+    template: '<span><input v-model="parentMessage"> ' +
+              '<button @click="updateText">Update</button></span>',
     props: {
       parentMessage: String
     },

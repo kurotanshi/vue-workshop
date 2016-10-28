@@ -16,6 +16,7 @@
 <body>
 
   <div id="app">
+    {{ root }}
     <custom-header></custom-header>
     <custom-main></custom-main>
     <custom-aside></custom-aside>
@@ -26,6 +27,9 @@
 
     new Vue({
       el: '#app',
+      data:{
+        root: 'root'
+      },
       components: {
 
         CustomHeader: Vue.extend({
@@ -44,12 +48,15 @@
             '<custom-block></custom-block>' +
             '<custom-block></custom-block>' +
             '<custom-block></custom-block>' +
-            '<custom-block></custom-block>' +
-            '<custom-block></custom-block>' +
           '</div>',
           components: {
             CustomBlock: Vue.extend({
-              template: '<div class="block">B</div>',
+              template: '<div class="block">{{ n }}</div>',
+              data: function(){
+                return {
+                  n: 'A'
+                }
+              }
             })
           }
         }),

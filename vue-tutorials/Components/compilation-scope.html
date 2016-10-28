@@ -11,15 +11,15 @@
 <body>
 
     <template id="child-template">
-      <h1>{{ msg }}</h1>
+     <h1>CHILD: {{ msg }}</h1>
     </template>
 
     <div id="app">
-      <h2>{{ msg }}</h2>
+      <h2>PARENT: {{ msg }}</h2>
       <hr>
 
       <!-- {{ msg }} not work -->
-      <child>{{ msg }}</child>
+      <child>AAAA {{ msg }}</child>
     </div>
 
 

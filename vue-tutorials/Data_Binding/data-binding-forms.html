@@ -4,6 +4,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.css">
   <title>Vue Data Binding (Forms)</title>
   <style>
+    #app{ font-size: 2em;  }
     #app div{ margin: 1em 0;  }
   </style>
 </head>
@@ -19,8 +20,7 @@
     <hr>
 
     <div class="form-chkbox">
-      <input type="checkbox"
-             id="checkbox" v-model="checked">
+      <input type="checkbox" id="checkbox" v-model="checked">
       <label for="checkbox">{{ checked }}</label>
     </div>
 
@@ -40,10 +40,10 @@
     <hr>
 
     <div class="form-radio">
-      <input type="radio" id="one" value="One" v-model="picked">
+      <input type="radio" id="one" value="1" v-model="picked">
       <label for="one">One</label>
       <br>
-      <input type="radio" id="two" value="Two" v-model="picked">
+      <input type="radio" id="two" value="2" v-model="picked">
       <label for="two">Two</label>
       <br>
       <span>Picked: {{ picked }}</span>
@@ -54,9 +54,8 @@
     <div class="form-select">
       <select v-model="selected">
         <option>A</option>
-        <!-- selected not work -->
-        <option selected>B</option>
-        <option>C</option>
+        <option>B</option>
+        <option selected>C</option>
       </select>
       <span>Selected: {{ selected }}</span>
     </div>
@@ -76,7 +75,7 @@
     new Vue({
       el: '.form-chkbox',
       data: {
-        checked: false
+        checked: true
       }
     });
 
@@ -98,7 +97,7 @@
     new Vue({
       el: '.form-select',
       data: {
-        selected: ''
+        selected: 'B'
       }
     });
   </script>
