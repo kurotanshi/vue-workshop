@@ -1,4 +1,4 @@
-# workshop
+# workshop_completed_yarn
 
 > A Vue.js project
 
