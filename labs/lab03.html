@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Lab 03: computed</title>
+  <style type="text/css">
+    #app { font-size: 2em; margin: 1em;}
+    input{ font-size: 1em; width: 120px; border: 1px solid #aaa; }
+  </style>
+</head>
+<body>
+
+  <div id="app">
+    <input v-model.number="numA"> + <input v-model.number="numB"> = {{ sum }}
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.8/vue.js"></script>
+  <script>
+
+    var vm = new Vue({
+      el: '#app',
+      data:{
+        numA: '',
+        numB: ''
+      },
+      computed: {
+        sum (){
+          // todo: 將 numA 的數值與 numB 的數值相加後回傳
+          return this.numA + this.numB;
+        }
+      }
+    });
+
+  </script>
+</body>
+</html>
