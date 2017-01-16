@@ -86,18 +86,12 @@ export default {
     fetchData (){
       var _this = this;
 
-      // GET request
-      _this.$http({
-          url: 'http://www.json-generator.com/api/json/get/' + _this.generator + '?indent=2',
-          method: 'GET'
-        })
-        .then(function(res){
-          // success
-          _this.rows = res.data;
-        }, function(res){
-          // error
-          console.log( res );
-        });
+      var url = 'http://www.json-generator.com/api/json/get/' + _this.generator + '?indent=2';
+
+      Vue.axios.get(url).then((res) => {
+        _this.rows = res.data;
+      });
+
     },
     reset (){
       this.newRows = { id: '', name: '', duration: 1, open: false, isEdit: false };
