@@ -44,11 +44,15 @@
       },
       beforeUpdate: function(){
         // 元件被更新之前
-        console.log( 'beforeUpdate', this.$el.querySelector('h1').innerText, this.count );
+        console.log( 'beforeUpdate',
+          this.$el.querySelector('h1').innerText,
+          this.count );
       },
       updated: function(){
         // 元件被更新之後
-        console.log( 'updated', this.$el.querySelector('h1').innerText, this.count );
+        console.log( 'updated',
+          this.$el.querySelector('h1').innerText,
+          this.count );
       }
     });
 

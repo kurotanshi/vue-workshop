@@ -13,7 +13,7 @@
   <div id="app">
     <child message="Hello!"></child>
     <hr>
-    <child message="Hi!"></child>
+    <child :message="hi"></child>
     <hr>
     <child message="12345"></child>
   </div>
@@ -23,11 +23,18 @@
 
     Vue.component('child', {
       props: ["message"],
-      template: '<H1>{{ message }}</H1>'
+      template: '<H1>{{ message }}</H1>',
+      data: function(){
+        return {
+        }
+      }
     });
 
     var vm = new Vue({
-      el: '#app'
+      el: '#app',
+      data: {
+        hi: "HAHA"
+      }
     });
 
   </script>
